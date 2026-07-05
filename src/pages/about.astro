@@ -1,0 +1,146 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={`关于我 - ${SITE_TITLE}`} description="了解更多关于我和这个网站的故事" />
+  </head>
+  <body>
+    <Header />
+
+    <main>
+      <article class="about">
+        <header class="about-header">
+          <div class="about-avatar">🐱</div>
+          <h1>关于 <span class="highlight">我</span></h1>
+          <p class="about-subtitle">一个热爱游戏和音乐的普通人</p>
+        </header>
+
+        <div class="about-content">
+          <section class="about-section card">
+            <h2>🎮 游戏人生</h2>
+            <p>
+              从小玩着单机游戏，经历了 CS1.6、GTAS 到现在的 33号远征队。
+              最喜欢的类型是 <strong>FPS</strong> 和 <strong>独立游戏</strong>，
+              偶尔也和朋友联机打打 <strong>沙盒</strong>。
+            </p>
+            <p>最近在玩：APEX、Terraria、生化危机系列。</p>
+            <div class="game-list">
+              <span class="tag">🎯 FPS</span>
+              <span class="tag">⚔️ Indie</span>
+              <span class="tag">🌍 SandBox</span>
+              <span class="tag">🏃 Speedrun</span>
+              <span class="tag">🎵 Rhythm</span>
+            </div>
+          </section>
+
+          <section class="about-section card">
+            <h2>🎵音乐痴 </h2>
+            <p>
+              喜欢各种各样的音乐，最喜欢的是 <strong>古典</strong> 和 <strong>R＆B</strong>。
+              上到管弦乐下到DJ土歌我都有喜欢的曲目。
+            </p>
+            <div class="game-list">
+              <span class="tag">古典</span>
+              <span class="tag">R＆B</span>
+              <span class="tag">Rap</span>
+              <span class="tag">Pop</span>
+            </div>
+          </section>
+
+          <section class="about-section card">
+            <h2>📬 联系方式</h2>
+            <p>
+              欢迎同样热爱游戏和音乐的朋友来交流！
+            </p>
+            <ul class="contact-list">
+              <li>🐧 QQ: 1512285980</li>
+              <li>💬 Discord: 暂无</li>
+              <li>📧 Email: <a href="mailto:hello@example.com">1512285980@qq.com</a></li>
+              <li>🐙 GitHub: <a href="https://github.com">github.com/Is-JunZe</a></li>
+            </ul>
+          </section>
+        </div>
+      </article>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .about {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .about-header {
+    text-align: center;
+    padding: 2em 0 3em;
+  }
+
+  .about-avatar {
+    font-size: 5em;
+    margin-bottom: 0.3em;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .about-subtitle {
+    color: rgb(var(--text-secondary));
+    font-size: 1.1em;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+  }
+
+  .about-section h2 {
+    font-size: 1.4em;
+    margin-bottom: 0.8em;
+  }
+
+  .about-section p {
+    color: rgb(var(--text-secondary));
+    line-height: 1.8;
+  }
+
+  .game-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    margin-top: 1em;
+  }
+
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    color: rgb(var(--text-secondary));
+  }
+
+  .contact-list li {
+    padding: 0.4em 0;
+  }
+
+  .contact-list a {
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,267 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+
+    <!-- 个人介绍 Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-avatar">🎮</div>
+        <h1>你好，我是 <span class="highlight">君泽</span></h1>
+        <p class="hero-tagline">
+          白天准备考研，晚上猛打游戏。<br/>
+          这里记录我的游戏日常、开发心得、和生活里的有趣瞬间。
+        </p>
+        <div class="hero-links">
+          <a href="/blog" class="btn">📝 看文章</a>
+          <a href="/about" class="btn btn-secondary">👤 关于我</a>
+        </div>
+      </div>
+      <div class="hero-decoration">
+        <div class="deco-circle"></div>
+        <div class="deco-circle-2"></div>
+      </div>
+    </section>
+
+    <!-- 文章列表 -->
+    <main>
+      <h2 class="section-title">
+        <span class="title-icon">📝</span> 最新文章
+      </h2>
+      {
+        posts.length === 0 ? (
+          <p class="empty-state">还没有文章，马上就来！🚀</p>
+        ) : (
+          <div class="post-list">
+            {posts.map((post) => (
+              <article class="post-card card">
+                <a href={`/blog/${post.id.replace(/\.md$/, '')}`} class="post-link">
+                  <div class="post-info">
+                    <h3>{post.data.title}</h3>
+                    <p class="post-desc">{post.data.description}</p>
+                    <div class="post-meta">
+                      <span class="post-date">
+                        <FormattedDate date={post.data.pubDate} />
+                      </span>
+                      {post.data.tags && post.data.tags.length > 0 && (
+                        <span class="post-tags">
+                          {post.data.tags.slice(0, 3).map((tag: string) => (
+                            <span class="tag">{tag}</span>
+                          ))}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* === Hero 区域 === */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 5em 1.5em 4em;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(0, 240, 255, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 50%, rgba(255, 110, 199, 0.04) 0%, transparent 60%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  .hero-avatar {
+    font-size: 5em;
+    margin-bottom: 0.3em;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .hero h1 {
+    font-size: 2.8em;
+    margin-bottom: 0.4em;
+  }
+
+  .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-tagline {
+    font-size: 1.15em;
+    color: rgb(var(--text-secondary));
+    line-height: 1.8;
+    margin-bottom: 2em;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-secondary {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    background: rgba(255, 110, 199, 0.05);
+  }
+  .btn-secondary:hover {
+    background: rgba(255, 110, 199, 0.15);
+    box-shadow: var(--accent-secondary-glow);
+  }
+
+  /* 装饰 */
+  .hero-decoration {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .deco-circle {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    animation: spin 20s linear infinite;
+  }
+  .deco-circle-2 {
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 110, 199, 0.08);
+    animation: spin 25s linear infinite reverse;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* === 文章列表 === */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 1.5em;
+  }
+
+  .title-icon {
+    font-size: 0.8em;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  .post-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .post-link {
+    display: block;
+    padding: 1.5em;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+  }
+  .post-link:hover {
+    color: inherit;
+    text-shadow: none;
+    border-bottom: none;
+  }
+
+  .post-info h3 {
+    font-size: 1.3em;
+    margin-bottom: 0.3em;
+    color: rgb(var(--text-primary));
+    transition: color 0.2s;
+  }
+  .post-link:hover h3 {
+    color: var(--accent);
+  }
+
+  .post-desc {
+    color: rgb(var(--text-secondary));
+    font-size: 0.95em;
+    margin-bottom: 0.8em;
+    line-height: 1.6;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    flex-wrap: wrap;
+  }
+
+  .post-date {
+    color: rgb(var(--text-muted));
+    font-size: 0.85em;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 0.3em;
+    flex-wrap: wrap;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: rgb(var(--text-muted));
+    padding: 3em 0;
+    font-size: 1.2em;
+  }
+
+  @media (max-width: 720px) {
+    .hero {
+      padding: 3em 1em 2.5em;
+    }
+    .hero h1 {
+      font-size: 2em;
+    }
+    .hero-tagline {
+      font-size: 1em;
+    }
+  }
+</style>
